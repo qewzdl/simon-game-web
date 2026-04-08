@@ -1,0 +1,174 @@
+:root {
+    --box-size: 100px;
+
+    --color-box-inactive: #919191;
+
+    --color-box-1: #e33e4b;
+    --color-box-2: #60ea36;
+    --color-box-3: #3673e3;
+    --color-box-4: #dde53e;
+    
+    --color-box-1-active: #ff0015;
+    --color-box-2-active: #3cff00;
+    --color-box-3-active: #0059ff;
+    --color-box-4-active: #f2ff00;
+
+    --color-text-primary: #000000;
+    --color-text-secondary: #333333;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+
+    margin-inline: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "outfit";
+
+    position: relative;
+}
+
+header {
+    margin-bottom: 32px;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+h1 {
+    user-select: none;
+
+    color: var(--color-text-primary);
+}
+
+.box-container {
+    display: grid;
+    grid-template-columns: var(--box-size) var(--box-size);
+    grid-template-rows: var(--box-size) var(--box-size);
+    gap: 8px;
+}
+
+.box {
+    background-color: var(--color-box-inactive);
+
+    border: 4px solid #000000;
+    border-radius: 0;
+
+    transition: background-color 0.1s, box-shadow 0.1s;
+}
+
+.text-to-start {
+    margin-block: 32px;
+
+    display: flex;
+    justify-content: center;
+
+    color: var(--color-text-secondary);
+    
+    user-select: none;
+
+    transition: opacity 0.1s;
+}
+
+#level-label {
+    color: var(--color-text-primary);
+    font-weight: bold;
+    font-size: 20px;
+
+    opacity: 0;
+
+    user-select: none;
+
+    transition: opacity 0.1s;
+}
+
+#best-score-label {
+    color: var(--color-text-primary);
+    font-weight: bold;
+    font-size: 20px;
+
+    user-select: none;
+
+}
+
+body.active-game #box1 {
+    background-color: var(--color-box-1);
+}
+body.active-game #box2 {
+    background-color: var(--color-box-2);
+}
+body.active-game #box3 {
+    background-color: var(--color-box-3);
+}
+body.active-game #box4 {
+    background-color: var(--color-box-4);
+}
+
+body.active-game #box1.active {
+    background-color: var(--color-box-1-active);
+    box-shadow: 0 0 8px var(--color-box-1);
+    border-color: var(--color-box-1-active);
+}
+body.active-game #box2.active {
+    background-color: var(--color-box-2-active);
+    box-shadow: 0 0 8px var(--color-box-2);
+    border-color: var(--color-box-2-active);
+}
+body.active-game #box3.active {
+    background-color: var(--color-box-3-active);
+    box-shadow: 0 0 8px var(--color-box-3);
+    border-color: var(--color-box-3-active);
+}
+body.active-game #box4.active {
+    background-color: var(--color-box-4-active);
+    box-shadow: 0 0 8px var(--color-box-4);
+    border-color: var(--color-box-4-active);
+}
+
+body.active-game .box.clickable {
+    cursor: pointer;
+}
+
+body.active-game .text-to-start {
+    opacity: 0;
+}
+
+body.active-game #level-label {
+    opacity: 1;
+}
+
+.github-link {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+
+    text-decoration: none;
+    padding: 8px 12px 8px 8px;
+    background: linear-gradient(to right, #444444, #222222, #222222, #444444);
+    color: #ffffff;
+    border: 1px solid #aaaaaa;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 1);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    font-size: 14px;
+}
+
+.github-link img {
+    height: 24px;
+}
