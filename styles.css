@@ -191,3 +191,49 @@ body.active-game #level-label {
 .github-link:hover::after {
     opacity: 1;
 }
+
+#game-mode-settings {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+
+#game-mode-settings-label {
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--color-text-secondary);
+}
+
+#game-mode-settings-list {
+    display: flex; 
+    gap: 4px;
+    padding: 4px;
+    border: 4px solid #000000;
+    border-radius: 999px;
+}
+
+.game-mode {
+    padding: 8px 12px;
+    background-color: #cccccc;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    width: 64px;
+    text-align: center;
+    border: 4px solid #000000;
+    border-radius: 999px;
+    color: #444444;
+}
+
+.game-mode.active {
+    background-color: #e41e1e;
+    color: #ffffff;
+    cursor: auto;
+}
+
+body.active-game .game-mode:not(.active) {
+    display: none;
+}

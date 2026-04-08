@@ -12,19 +12,23 @@ var gameHistory = [];
 
 var bestScore = 0;
 
+const gameModes = ['classic', 'hard'];
+var currentGameMode = gameModes[0];
+
 const body = document.body;
 const textToStartLabel = document.getElementById('text-to-start');
 const levelLabel = document.getElementById('level-label');
 const bestScoreLabel = document.getElementById('best-score-label');
 
-textToStartLabel.innerText = (isMobile) ? 'Tap the screen to start' : 'Press any button to start';
+updateStartGameTextLabel();
+
+setChangeGameModeEvent();
+changeGameMode(currentGameMode);
 
 setStartGameEvent();
 
 function startGame() {
     isGameStarted = true;
-
-    console.log(currentHistory, gameHistory);
 
     resetLevel();
     updateBestScoreLabel();
@@ -52,15 +56,32 @@ function handleLevel() {
 
     gameHistory.push(randomBoxNum);
 
-    for (let i = 0; i < gameHistory.length; i++) {
-        setTimeout(
-            animateActiveBox, 
-            animationTimeInterval * 1000 * (i + 1),
-            getBoxById(gameHistory[i])
-        );
+    switch (currentGameMode) {
+        case gameModes[0]:
+            for (let i = 0; i < gameHistory.length; i++) {
+                setTimeout(
+                    animateActiveBox, 
+                    animationTimeInterval * 1000 * (i + 1),
+                    getBoxById(gameHistory[i])
+                );
+            }
+            
+            setTimeout(handleChoice, animationTimeInterval * 1000 * (gameHistory.length + 1));
+            break;
+
+        case gameModes[1]:
+            setTimeout(
+                animateActiveBox, 
+                animationTimeInterval * 1000,
+                getBoxById(gameHistory[gameHistory.length - 1])
+            );
+            
+            handleChoice();
+            break;
+        
+        default:
+            console.log('Unknown game mode.');
     }
-    
-    setTimeout(handleChoice, animationTimeInterval * 1000 * (gameHistory.length + 1));
 }
 
 function handleChoice() {
@@ -111,13 +132,13 @@ function matchHistories() {
 }
 
 function setStartGameEvent() {
-    const event = (isMobile) ? 'touchstart' : 'keydown';
+    const eventType = (isMobile) ? 'touchstart' : 'keydown';
 
-    document.addEventListener(event, function eventHandler() {
+    document.addEventListener(eventType, function eventHandler() {
         if (!isGameStarted) {
             startGame();
     
-            this.removeEventListener(event, eventHandler);
+            this.removeEventListener(eventType, eventHandler);
         }
     });
 }
@@ -138,6 +159,10 @@ function updateBestScoreLabel() {
     bestScoreLabel.innerText = `Best Score: ${bestScore}`;
 }
 
+function updateStartGameTextLabel() {
+    textToStartLabel.innerText = (isMobile) ? 'Tap the screen to start' : 'Press any button to start';
+}
+
 function resetLevel() {
     currentLevel = 1;
     updateLevelLabel();
@@ -152,4 +177,19 @@ function animateActiveBox(box) {
     setTimeout(() => {
         box.classList.remove('active');
     }, animationDuration * 1000);
+}
+
+function setChangeGameModeEvent() {
+    for (let i = 0; i < gameModes.length; i++) {
+        let gameModeButton = document.getElementById(`game-mode-` + gameModes[i]);
+
+        gameModeButton.addEventListener('click', () => changeGameMode(gameModes[i]));
+    }
+}
+
+function changeGameMode(newMode) {
+    document.getElementById(`game-mode-${currentGameMode}`).classList.remove('active');
+
+    currentGameMode = newMode;
+    document.getElementById(`game-mode-${currentGameMode}`).classList.add('active');
 }
