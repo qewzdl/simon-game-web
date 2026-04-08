@@ -145,7 +145,7 @@ function matchHistories() {
 }
 
 function setStartGameEvent() {
-    const eventType = (isMobile) ? 'touchstart' : 'keydown';
+    const eventType = (isMobile) ? 'click' : 'keydown';
     let ignoredElements = [
         gameModeSettingsElement,
         githubLinkElement,
