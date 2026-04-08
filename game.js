@@ -1,3 +1,5 @@
+const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
 var isGameStarted = false;
 
 var levelTimeInterval = 1;
@@ -11,10 +13,13 @@ var gameHistory = [];
 var bestScore = 0;
 
 const body = document.body;
+const textToStartLabel = document.getElementById('text-to-start');
 const levelLabel = document.getElementById('level-label');
 const bestScoreLabel = document.getElementById('best-score-label');
 
-setKeydownEvent();
+textToStartLabel.innerText = (isMobile) ? 'Tap the screen to start' : 'Press any button to start';
+
+setStartGameEvent();
 
 function startGame() {
     isGameStarted = true;
@@ -35,7 +40,7 @@ function gameOver() {
 
     body.classList.remove('active-game');
 
-    setKeydownEvent();
+    setStartGameEvent();
     
     isGameStarted = false;
 }
@@ -105,12 +110,14 @@ function matchHistories() {
     setTimeout(handleLevel, levelTimeInterval * 1000);
 }
 
-function setKeydownEvent() {
-    document.addEventListener('keydown', function eventHandler() {
+function setStartGameEvent() {
+    const event = (isMobile) ? 'touchstart' : 'keydown';
+
+    document.addEventListener(event, function eventHandler() {
         if (!isGameStarted) {
             startGame();
     
-            this.removeEventListener('keydown', eventHandler);
+            this.removeEventListener(event, eventHandler);
         }
     });
 }

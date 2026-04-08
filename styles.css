@@ -70,7 +70,7 @@ h1 {
     transition: background-color 0.1s, box-shadow 0.1s;
 }
 
-.text-to-start {
+#text-to-start {
     margin-block: 32px;
 
     display: flex;
@@ -142,7 +142,7 @@ body.active-game .box.clickable {
     cursor: pointer;
 }
 
-body.active-game .text-to-start {
+body.active-game #text-to-start {
     opacity: 0;
 }
 
@@ -167,8 +167,27 @@ body.active-game #level-label {
     gap: 8px;
     border-radius: 999px;
     font-size: 14px;
+    user-select: none;
 }
 
 .github-link img {
     height: 24px;
+}
+
+.github-link::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    border-radius: 999px;
+    opacity: 0;
+    background: linear-gradient(to right, rgb(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05), rgb(255, 255, 255, 0.1));
+    transition: opacity 0.2s;
+}
+
+.github-link:hover::after {
+    opacity: 1;
 }
