@@ -20,12 +20,20 @@ const textToStartLabel = document.getElementById('text-to-start');
 const levelLabel = document.getElementById('level-label');
 const bestScoreLabel = document.getElementById('best-score-label');
 
-updateStartGameTextLabel();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
 
-setChangeGameModeEvent();
-changeGameMode(currentGameMode);
+function init() {
+    updateStartGameTextLabel();
 
-setStartGameEvent();
+    setChangeGameModeEvent();
+    changeGameMode(currentGameMode);
+
+    setStartGameEvent();
+}
 
 function startGame() {
     isGameStarted = true;
@@ -56,6 +64,8 @@ function handleLevel() {
 
     gameHistory.push(randomBoxNum);
 
+    let handleChoiceTimer = 0;
+
     switch (currentGameMode) {
         case gameModes[0]:
             for (let i = 0; i < gameHistory.length; i++) {
@@ -66,7 +76,7 @@ function handleLevel() {
                 );
             }
             
-            setTimeout(handleChoice, animationTimeInterval * 1000 * (gameHistory.length + 1));
+            handleChoiceTimer = animationTimeInterval * 1000 * (gameHistory.length + 1);
             break;
 
         case gameModes[1]:
@@ -75,13 +85,16 @@ function handleLevel() {
                 animationTimeInterval * 1000,
                 getBoxById(gameHistory[gameHistory.length - 1])
             );
-            
-            handleChoice();
             break;
         
         default:
             console.log('Unknown game mode.');
+
+            setTimeout(gameOver, levelTimeInterval * 1000);
+            return;
     }
+
+    setTimeout(handleChoice, handleChoiceTimer);
 }
 
 function handleChoice() {
@@ -114,7 +127,6 @@ function matchHistories() {
             animateActiveBox(getBoxById(currentHistory[i]));
 
             setTimeout(gameOver, levelTimeInterval * 1000);
-
             return;
         }
     }
@@ -124,8 +136,7 @@ function matchHistories() {
         return;
     }
     
-    currentLevel++;
-    updateLevelLabel();
+    incrementLevel();
     updateBestScoreLabel();
 
     setTimeout(handleLevel, levelTimeInterval * 1000);
@@ -134,7 +145,9 @@ function matchHistories() {
 function setStartGameEvent() {
     const eventType = (isMobile) ? 'touchstart' : 'keydown';
 
-    document.addEventListener(eventType, function eventHandler() {
+    document.addEventListener(eventType, function eventHandler(e) {
+        if (isMobile && e.target !== body) return;
+
         if (!isGameStarted) {
             startGame();
     
@@ -161,6 +174,11 @@ function updateBestScoreLabel() {
 
 function updateStartGameTextLabel() {
     textToStartLabel.innerText = (isMobile) ? 'Tap the screen to start' : 'Press any button to start';
+}
+
+function incrementLevel() {
+    currentLevel++;
+    updateLevelLabel();
 }
 
 function resetLevel() {
