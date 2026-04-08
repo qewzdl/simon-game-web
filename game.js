@@ -19,6 +19,8 @@ const body = document.body;
 const textToStartLabel = document.getElementById('text-to-start');
 const levelLabel = document.getElementById('level-label');
 const bestScoreLabel = document.getElementById('best-score-label');
+const gameModeSettingsElement = document.getElementById('game-mode-settings');
+const githubLinkElement = document.querySelector('.github-link');
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -144,9 +146,22 @@ function matchHistories() {
 
 function setStartGameEvent() {
     const eventType = (isMobile) ? 'touchstart' : 'keydown';
+    let ignoredElements = [
+        gameModeSettingsElement,
+        githubLinkElement,
+    ];
 
     document.addEventListener(eventType, function eventHandler(e) {
-        if (isMobile && e.target !== body) return;
+        if (isMobile) {
+            for (let i = 0; i < ignoredElements.length; i++) {
+                if (e.target === ignoredElements[i]) return;
+
+                let children = ignoredElements[i].querySelectorAll('*');
+                for (let j = 0; j < children.length; j++) {
+                    if (e.target === children[j]) return;
+                }
+            }
+        }
 
         if (!isGameStarted) {
             startGame();
